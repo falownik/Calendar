@@ -1,5 +1,5 @@
 all:
-	g++ -I ./lib -c Vector.cpp Test.cpp
-	g++ -o Vector Vector.o Test.o
+	g++ -I ./lib C:\Program Files\SFML\include -c grafics.cpp
+	g++ -o Calendar grafics.o
 	rm -f *.o
-	./Vector
+	./Calendar
