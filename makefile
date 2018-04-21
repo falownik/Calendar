@@ -1,5 +1,6 @@
 all:
-	g++ -I ./lib/SFML/include -c grafics.cpp
-	g++ -o Calendar grafics.o -L ./lib/SFML/lib -lsfml-graphics -lsfml-window -lsfml-system
+	g++ -I ./lib/include -c grafics.cpp
+	g++ grafics.o -o Calendar -L ./lib/lib -lsfml-graphics -lsfml-window -lsfml-system
+	export LD_LIBRARY_PATH=./lib/lib
 	rm -f *.o
-	export LD_LIBRARY_PATH=./lib/SFML/lib && ./Calendar
+	./Calendar
