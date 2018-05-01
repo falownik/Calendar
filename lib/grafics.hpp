@@ -61,7 +61,8 @@ class CalendarWindow
         for (auto i = 0 ; i < 31 ; i++ )
             days[i].setString(std::to_string(i));
         }
-        void draw(int days);
+        Group draw(int days, int xx, int yy);
+        void setPosition(int xx, int yy);
 
 };
 class CalendarGui
@@ -69,27 +70,18 @@ class CalendarGui
 public:
     std::vector <int> x = std::vector <int>(12);
     std::vector <int> y = std::vector <int>(12);
-    std::vector <sf::RectangleShape> rectangle = std::vector <sf::RectangleShape>(12);
-    std::vector <sf::Text> text = std::vector <sf::Text>(12);
     std::vector <CalendarWindow> calendar = std::vector <CalendarWindow>(12);
-    sf::Font font;
     int year;
     sf::RenderWindow Window;
     CalendarGui(int xx,int yy, int years = 2018)
     {
         for ( auto i = 0 ; i < 12 ; i++ )
-        {
-            x[i] = ((i/3)+1)*(xx - 838);
-            for ( auto k = 0 ; k < 32 ; k++ )
-            {
-                std::vector <int> x_temp = std::vector <int>(32);
-                x_temp[k] = x[i] + ((k/6)+1) ;
-            }
-            
-        }
+            x[i] = ((i/3)+1)*(int(0.112*xx)) + 600;
+
         for ( auto i = 0 ; i < 12 ; i++ )
-            y[i] = ((i%3)+1)*(yy - 630);
-    Window.create(sf::VideoMode(1024, 762), "Calendar");
+            y[i] = ((i%3)+1)*(int(0.229*yy)) - 100;
+
+        Window.create(sf::VideoMode(xx, yy), "Calendar");
     }
     void drawCalendar(int xx, int yy, int years);
 };
