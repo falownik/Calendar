@@ -27,7 +27,7 @@ class Calendar
             days = 29;
         else 
             days = 28;
-            
+
         tm timeStruct = {};
         timeStruct.tm_year = y - 1900;
         timeStruct.tm_mon = m - 1;
@@ -60,7 +60,7 @@ class Time
             
     }
 };
-class Event
+class Events
 {
  Calendar date;
  Time time;
