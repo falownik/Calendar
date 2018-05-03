@@ -4,40 +4,54 @@
 
 class Calendar 
 {
-    public:
+public:
+    std::vector <int> daysInMonth = std::vector <int> (13);
+    std::vector <std::string> nameOfMonth = std::vector <std::string> (13);
     int day, days, month, year, dayOfWeek;
     bool isLeap;
-    Calendar (int y, int m, int d = 1)
+    Calendar(){}
+    Calendar (int y, int d = 1)
     {
-        if (m > 0 && m < 13)
-            month = m;
-        else 
-            throw std::out_of_range("there's no such month");
-
+        //Set year
+        year = y;
+        //Set number of days except February
+        daysInMonth[0] = 0;
+        daysInMonth[1] = 31;
+        daysInMonth[3] = 31;
+        daysInMonth[4] = 30;
+        daysInMonth[5] = 31;
+        daysInMonth[6] = 30;
+        daysInMonth[7] = 31;
+        daysInMonth[8] = 31;
+        daysInMonth[9] = 30;
+        daysInMonth[10] = 31;
+        daysInMonth[11] = 30;
+        daysInMonth[12] = 31;
+        //Set number of days od February in term of leap year
         if (((y%4 == 0) && (y % 100 != 0)) || (y % 400 == 0))
-            isLeap == true;
+            daysInMonth[2] = 29;
         else
-            isLeap = false;
-        
-        if ( m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12 )
-            days == 31;
-        else if ( m == 4 || m == 6 || m == 9 || m == 11)
-            days = 30;
-        else if (m == 2 && isLeap == true)
-            days = 29;
-        else 
-            days = 28;
+            daysInMonth[2] = 28;
+        //Set names of months
+        nameOfMonth[0] = "not a month";
+        nameOfMonth[1] =  "January";
+        nameOfMonth[2] =  "February";
+        nameOfMonth[3] =  "March";
+        nameOfMonth[4] = "April";
+        nameOfMonth[5] = "May";
+        nameOfMonth[6] = "June";
+        nameOfMonth[7] = "July";
+        nameOfMonth[8] = "August";
+        nameOfMonth[9] = "September";
+        nameOfMonth[10] = "October";
+        nameOfMonth[11] = "November";
+        nameOfMonth[12] = "December";
 
-        tm timeStruct = {};
-        timeStruct.tm_year = y - 1900;
-        timeStruct.tm_mon = m - 1;
-        timeStruct.tm_mday = d;
-        timeStruct.tm_hour = 12;
-        mktime( &timeStruct );
-        dayOfWeek = timeStruct.tm_wday;
-        
 
     }
+    int getFirstDay(int m);
+    int getNumberOfDays(int month);
+    void setYear(int y);
 
 
 };
