@@ -10,10 +10,17 @@ void CalendarGui::drawCalendar(int xx, int yy, int years)
     {
          Window.draw(calendar[k].draw(calDate.getFirstDay(k+1), calDate.daysInMonth[k+1], x[k],y[k]));
     }
+        yearString.setFont(calendar[0].font);
+        yearString.setString(std::to_string(years));
+        yearString.setFillColor(sf::Color::Yellow);
+        yearString.setPosition(sf::Vector2f(x[0] + 10, y[0] - 70));
+        yearString.setCharacterSize(25);
+        Window.draw(yearString);
     Window.display();
 }
-void CalendarGui::setYear(int year){
-    calDate.setYear(year);
+
+void CalendarGui::setYear(int years){
+    calDate.setYear(years);
     for( auto a = 0;  a < 12 ; a ++)
         calendar[a].text[0].setString(calDate.nameOfMonth[a+1]);
 }
@@ -32,9 +39,9 @@ Group CalendarWindow::draw (int firstDay, int daysInMonth, int xx, int yy)
         else
             rectangle[i].setSize(sf::Vector2f(tileSizeX, tileSizeY));
         if ((i % 2) == true)
-            rectangle[i].setFillColor(sf::Color(89, 110, 90));
+            rectangle[i].setFillColor(sf::Color(83, 83, 83));
         else
-            rectangle[i].setFillColor(sf::Color(10, 11, 150));
+            rectangle[i].setFillColor(sf::Color(67, 67, 67));
         group.push_back(rectangle[i]);
     }
     
@@ -52,6 +59,9 @@ Group CalendarWindow::draw (int firstDay, int daysInMonth, int xx, int yy)
             days[i - 6].setFont(font);
             days[i - 6].setFillColor(sf::Color::Yellow);
             days[i - 6].setCharacterSize(17);
+            // correction for standard, in which Sunday is 0
+            if (firstDay == 0)
+                firstDay = 7;
             days[i - 6].setPosition(x_small[i + firstDay], y_small[i + firstDay]);
             group.push_back(days[i - 6]);  
         }
@@ -99,8 +109,18 @@ const sf::Drawable& Group::pop_back() {
     return drawable;
 }
 
-class Button 
+void Button::setButton (int xx, int yy, int w, int h, std::string name)
 {
-public:
-    
+    x = xx; y = yy; width = w; height = h;
+font.loadFromFile("arial.ttf");
+text.setFont(font);
+text.setString(name);
+text.setFillColor(sf::Color::Yellow);
+text.setPosition(sf::Vector2f(xx,yy));
+text.setCharacterSize(17);
+rectangle.setPosition(sf::Vector2f(xx,yy));
+rectangle.setSize(sf::Vector2f(w,h));
+rectangle.setFillColor(sf::Color::Red);
+group.push_back(rectangle);
+group.push_back(text);
 }

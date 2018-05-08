@@ -56,9 +56,14 @@ int Calendar::getFirstDay(int m)
     }
 int main (void)
 {
-
-CalendarGui cal(1600,800,2018); 
-Calendar calendar (2018,2);
+int year = 2018;
+CalendarGui cal(1600,800,year); 
+Button buttonAddEvent;
+Button buttonIncrementYear;
+Button buttonDecrementYear;
+buttonAddEvent.setButton(1300,20, 50, 50,"add\nevent");
+buttonIncrementYear.setButton(1500, 20, 80, 50,"next");
+buttonDecrementYear.setButton(1400,20, 80, 50,"previous");
 while (cal.Window.isOpen())
 {
    sf::Event event;
@@ -71,13 +76,25 @@ while (cal.Window.isOpen())
 {
     if (event.mouseButton.button == sf::Mouse::Left)
     {
-        std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-        std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+        if (event.mouseButton.x > buttonDecrementYear.x && event.mouseButton.x < buttonDecrementYear.x + buttonDecrementYear.width)
+            if (event.mouseButton.y > buttonDecrementYear.y && event.mouseButton.y < buttonDecrementYear.y + buttonDecrementYear.height)
+                year--;
+
+        if (event.mouseButton.x > buttonIncrementYear.x && event.mouseButton.x < buttonIncrementYear.x + buttonIncrementYear.width)
+            if (event.mouseButton.y > buttonIncrementYear.y && event.mouseButton.y < buttonIncrementYear.y + buttonIncrementYear.height)
+                year++;
+        
+        if (event.mouseButton.x > buttonAddEvent.x && event.mouseButton.x < buttonAddEvent.x + buttonAddEvent.width)
+            if (event.mouseButton.y > buttonAddEvent.y && event.mouseButton.y < buttonAddEvent.y + buttonAddEvent.height)
+            ;
     }
 }
         }
         cal.Window.clear();
-        cal.drawCalendar(1024,768,2018);
+        cal.Window.draw(buttonDecrementYear.group);
+        cal.Window.draw(buttonAddEvent.group);
+        cal.Window.draw(buttonIncrementYear.group);
+        cal.drawCalendar(1600,800,year);
 
 }
 }

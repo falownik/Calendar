@@ -1,7 +1,19 @@
-all:
-	g++ -Wall -std=c++14 -I ./lib -I ./lib/include -c Calendar.cpp grafics.cpp
-	g++ Calendar.o grafics.o -o Calendar -L ./lib/lib -lsfml-graphics -lsfml-window -lsfml-system
+#Kompilacja warunkowa zalezna od wprowadzonych zmian
+CC = g++
+CFLAGS = -std=c++14
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+
+all: Calendar.o grafics.o
+	$(CC) Calendar.o grafics.o -o Calendar -L ./lib/lib $(LIBS) 
 	export LD_LIBRARY_PATH=./lib/lib
-	rm -f *.o
 	./Calendar
+
+grafics.o: grafics.cpp
+	$(CC) $(CFLAGS) -I ./lib -I ./lib/include -c grafics.cpp
+
+Calendar.o: Calendar.cpp
+	$(CC) $(CFLAGS) -I ./lib -I ./lib/include -c Calendar.cpp
+
+clean:		
+	rm -f *.o
 

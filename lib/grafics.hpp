@@ -78,6 +78,8 @@ public:
     std::vector <int> x = std::vector <int>(12);
     std::vector <int> y = std::vector <int>(12);
     std::vector <CalendarWindow> calendar = std::vector <CalendarWindow>(12);
+    sf::Text yearString;
+    sf::Font font;
     Calendar calDate;
     int year;
     sf::RenderWindow Window;
@@ -90,10 +92,38 @@ public:
             y[i] = ((i/4)+1)*(int(0.26*yy)) - 100;
 
         Window.create(sf::VideoMode(xx, yy), "Calendar");
-        Window.setFramerateLimit(1);
+        Window.setFramerateLimit(30);
     }
     void setYear(int year);
     void drawCalendar(int xx, int yy, int years);
     void addEvent();
     Calendar getDate(sf::Vector2i);
+};
+class Button 
+{
+public:
+   sf::Texture image;
+   sf::Text text; 
+   sf::Font font;
+   sf::RectangleShape rectangle;
+   Group group;
+   int x, y;
+   int width, height;
+   Button(){}
+   void setButton(int xx, int yy, int width, int height, std::string name);
+};
+class NotificationGui
+{
+public:
+    sf::RectangleShape rectangle;
+    sf::Text title, info, date;
+    Event envent;
+    int x, y;
+    int width, height;
+    NotificationGui(){}
+    void setNotification(Calendar date, Time time, std::string title, std::string info);
+    void updateDate(Calendar date);
+    void updateTime(Time time);
+    void updateTitle(std::string title);
+    void updateInfo(std::string info);
 };

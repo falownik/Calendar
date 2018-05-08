@@ -74,7 +74,7 @@ class Time
             
     }
 };
-class Events
+class Event
 {
  Calendar date;
  Time time;
