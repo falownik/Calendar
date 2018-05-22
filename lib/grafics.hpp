@@ -71,13 +71,33 @@ class CalendarWindow
         void setPosition(int xx, int yy);
         void setMonth(int year, int month);
 
+    };
+    class EventGui
+{
+public:
+    sf::RectangleShape rectangle;
+    sf::Text title, info, dateInString;
+    sf::Font font;
+    Group group;
+    Event event;
+    int x, y;
+    int width, height;
+    EventGui(){}
+    void setEvent(int numberOfEvent);
+    void dateToString();
+    void updateDate(Calendar date);
+    void updateTime(Time time);
+    void updateTitle(std::string title);
+    void updateInfo(std::string info);
 };
+
 class CalendarGui
 {
 public:
     std::vector <int> x = std::vector <int>(12);
     std::vector <int> y = std::vector <int>(12);
     std::vector <CalendarWindow> calendar = std::vector <CalendarWindow>(12);
+    std::vector <EventGui> event;
     sf::Text yearString;
     sf::Font font;
     Calendar calDate;
@@ -92,11 +112,13 @@ public:
             y[i] = ((i/4)+1)*(int(0.26*yy)) - 100;
 
         Window.create(sf::VideoMode(xx, yy), "Calendar");
-        Window.setFramerateLimit(30);
+        Window.setFramerateLimit(1);
     }
     void setYear(int year);
     void drawCalendar(int xx, int yy, int years);
     void addEvent();
+    void ReadEvent();
+    void printEvent();
     Calendar getDate(sf::Vector2i);
 };
 class Button 
@@ -111,19 +133,4 @@ public:
    int width, height;
    Button(){}
    void setButton(int xx, int yy, int width, int height, std::string name);
-};
-class NotificationGui
-{
-public:
-    sf::RectangleShape rectangle;
-    sf::Text title, info, date;
-    Event envent;
-    int x, y;
-    int width, height;
-    NotificationGui(){}
-    void setNotification(Calendar date, Time time, std::string title, std::string info);
-    void updateDate(Calendar date);
-    void updateTime(Time time);
-    void updateTitle(std::string title);
-    void updateInfo(std::string info);
 };

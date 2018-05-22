@@ -1,6 +1,6 @@
 #Kompilacja warunkowa zalezna od wprowadzonych zmian
 CC = g++
-CFLAGS = -std=c++14
+CFLAGS = -std=c++14 -Wall
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
 all: Calendar.o grafics.o

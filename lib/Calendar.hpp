@@ -9,8 +9,7 @@ public:
     std::vector <std::string> nameOfMonth = std::vector <std::string> (13);
     int day, days, month, year, dayOfWeek;
     bool isLeap;
-    Calendar(){}
-    Calendar (int y, int d = 1)
+    Calendar (int y = 2018, int d = 1)
     {
         //Set year
         year = y;
@@ -46,9 +45,9 @@ public:
         nameOfMonth[10] = "October";
         nameOfMonth[11] = "November";
         nameOfMonth[12] = "December";
-
-
     }
+    Calendar(const Calendar &cal) = default;
+     
     int getFirstDay(int m);
     int getNumberOfDays(int month);
     void setYear(int y);
@@ -67,16 +66,18 @@ class Time
         else
             throw std::out_of_range("not a time");
 
-        if (h >= 0 && h <=59)
+        if (h >= 0 && h <=23)
             hour = h;
             else
             throw std::out_of_range("not a time");
             
     }
 };
+
 class Event
 {
+    public:
  Calendar date;
  Time time;
- std::string title, info;
+ //sf::Text title, info, dateInString;
 };

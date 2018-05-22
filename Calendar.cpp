@@ -58,43 +58,61 @@ int main (void)
 {
 int year = 2018;
 CalendarGui cal(1600,800,year); 
+cal.ReadEvent();
 Button buttonAddEvent;
 Button buttonIncrementYear;
 Button buttonDecrementYear;
 buttonAddEvent.setButton(1300,20, 50, 50,"add\nevent");
 buttonIncrementYear.setButton(1500, 20, 80, 50,"next");
 buttonDecrementYear.setButton(1400,20, 80, 50,"previous");
+cal.printEvent();
+
 while (cal.Window.isOpen())
 {
-   sf::Event event;
-   while (cal.Window.pollEvent(event))
-   {
-       if (event.type == sf::Event::Closed)
+    sf::Event event;
+    while (cal.Window.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
             cal.Window.close();
 
-        if (event.type == sf::Event::MouseButtonPressed)
-{
-    if (event.mouseButton.button == sf::Mouse::Left)
-    {
-        if (event.mouseButton.x > buttonDecrementYear.x && event.mouseButton.x < buttonDecrementYear.x + buttonDecrementYear.width)
-            if (event.mouseButton.y > buttonDecrementYear.y && event.mouseButton.y < buttonDecrementYear.y + buttonDecrementYear.height)
-                year--;
+        switch (event.type)
+        {
+        case sf::Event::MouseButtonPressed:
+            if (event.mouseButton.button == sf::Mouse::Left)
+            {
+                if (event.mouseButton.x > buttonDecrementYear.x && event.mouseButton.x < buttonDecrementYear.x + buttonDecrementYear.width)
+                    if (event.mouseButton.y > buttonDecrementYear.y && event.mouseButton.y < buttonDecrementYear.y + buttonDecrementYear.height)
+                        year--;
 
-        if (event.mouseButton.x > buttonIncrementYear.x && event.mouseButton.x < buttonIncrementYear.x + buttonIncrementYear.width)
-            if (event.mouseButton.y > buttonIncrementYear.y && event.mouseButton.y < buttonIncrementYear.y + buttonIncrementYear.height)
-                year++;
-        
-        if (event.mouseButton.x > buttonAddEvent.x && event.mouseButton.x < buttonAddEvent.x + buttonAddEvent.width)
-            if (event.mouseButton.y > buttonAddEvent.y && event.mouseButton.y < buttonAddEvent.y + buttonAddEvent.height)
-            ;
-    }
-}
+                if (event.mouseButton.x > buttonIncrementYear.x && event.mouseButton.x < buttonIncrementYear.x + buttonIncrementYear.width)
+                    if (event.mouseButton.y > buttonIncrementYear.y && event.mouseButton.y < buttonIncrementYear.y + buttonIncrementYear.height)
+                        year++;
+
+                if (event.mouseButton.x > buttonAddEvent.x && event.mouseButton.x < buttonAddEvent.x + buttonAddEvent.width)
+                    if (event.mouseButton.y > buttonAddEvent.y && event.mouseButton.y < buttonAddEvent.y + buttonAddEvent.height)
+                    {
+                        cal.addEvent();
+                        std::cout << " co jest";
+                    }
+            }
+                break;
+                /*
+            case sf::Event::KeyPressed:
+                if (sf::Event::KeyEvent::alt)
+                ;
+                break;
+                */
+            default:
+                break;
         }
-        cal.Window.clear();
-        cal.Window.draw(buttonDecrementYear.group);
-        cal.Window.draw(buttonAddEvent.group);
-        cal.Window.draw(buttonIncrementYear.group);
-        cal.drawCalendar(1600,800,year);
 
+
+    }
+    cal.Window.clear();
+    cal.Window.draw(cal.event[0].group);
+    cal.Window.draw(buttonDecrementYear.group);
+    cal.Window.draw(buttonAddEvent.group);
+    cal.Window.draw(buttonIncrementYear.group);
+    cal.drawCalendar(1600, 800, year);
 }
 }

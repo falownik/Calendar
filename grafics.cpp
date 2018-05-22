@@ -1,6 +1,7 @@
 #include <include/SFML/Graphics.hpp>
 #include "grafics.hpp"
 #include <iostream>
+#include <fstream>
 
 void CalendarGui::drawCalendar(int xx, int yy, int years)
 {
@@ -124,3 +125,147 @@ rectangle.setFillColor(sf::Color::Red);
 group.push_back(rectangle);
 group.push_back(text);
 }
+
+
+void EventGui::setEvent(int numberOfEvent)
+{
+    std::string tit, i;
+    tit = title.getString();
+    i = info.getString();
+    std::fstream file;
+    file.open("events/events.txt", std::fstream::app);
+    if (!file)
+        std::cout << "something went wrong" << std::endl;
+
+    file << numberOfEvent << " " << event.time.hour << " " << event.time.minute << " " 
+    << event.date.day << " " << event.date.month << " " << event.date.year << std::endl;
+    file << tit << std::endl;
+    file << i << std::endl;
+
+    file.close();
+
+     std::cout << "flaga 3";
+}
+void EventGui::dateToString()
+{
+    sf::Font font;
+    font.loadFromFile("arial.ttf");
+    dateInString.setFont(font);
+
+    dateInString.setString(std::to_string(event.time.hour) + ":" + std::to_string(event.time.minute) +
+    "   " + std::to_string(event.date.day) + "." + std::to_string(event.date.month) + "." +
+    std::to_string(event.date.year));
+
+}
+
+
+void CalendarGui::addEvent()
+{
+    EventGui e;
+    std::string tit, i;
+    e.font.loadFromFile("arial.ttf");
+
+    std::cout << std::endl << " Podaj nazwę wydarzenia:";
+    std::getline (std::cin , tit);
+
+    std::cout << std::endl << " Podaj opis wydarzenia: ";
+    std::getline (std::cin, i);
+
+    std::cin.sync();
+
+    std::cout << std::endl << " Podaj rok: ";
+    std::cin >> e.event.date.year;
+
+    std::cout << std::endl << " Podaj miesiąc: ";
+    std::cin >> e.event.date.month;
+
+    std::cout << std::endl << " Podaj dzien: ";
+    std::cin >> e.event.date.day;
+
+    std::cout << std::endl << " Podaj godzine: ";
+    std::cin >> e.event.time.hour;
+
+    std::cout << std::endl << " Podaj minute: ";
+    std::cin >> e.event.time.minute;
+
+    std::cin.sync();
+
+    e.title.setFont(font);
+    e.info.setFont(font);
+    e.title.setString(tit);
+    e.info.setString(i);
+
+    e.setEvent(event.size());
+    event.push_back(e);
+
+     std::cout << "flaga 2";
+
+}
+void CalendarGui::ReadEvent()
+{
+    EventGui eventgui;
+    std::string tit, inf;
+    int id;
+    std::ifstream file;
+    file.open("events/events.txt");
+    if (!file)
+    {
+        std::cout << "something went wrong" << std::endl;
+        return;
+    }
+
+    while(!file.eof())
+    {
+        std::cout << file.fail();
+        file >> id; // ommiting id
+        file >> eventgui.event.time.hour;
+        file >> eventgui.event.time.minute;
+        file >> eventgui.event.date.day;
+        file >> eventgui.event.date.month;
+        file >> eventgui.event.date.year;
+        file.ignore(1,'\n'); 
+        std::getline (file, tit);
+        std::getline (file, inf);
+        eventgui.title.setFont(font);
+        eventgui.info.setFont(font);
+        eventgui.title.setString(tit);
+        eventgui.info.setString(inf);
+
+        event.push_back(eventgui);
+
+        std::cout << "wczytano";
+    }
+
+    file.close();
+}
+
+
+void CalendarGui::printEvent()
+{
+    for (unsigned int i = 0; i < event.size() ; i++)
+    {
+        font.loadFromFile("arial.ttf");
+        event[i].width = 500;
+        event[i].height = 120;
+        event[i].rectangle.setSize(sf::Vector2f(event[i].width, event[i].height));
+        event[i].rectangle.setPosition(sf::Vector2f(10, 10 + 130*i));
+        event[i].rectangle.setFillColor(sf::Color(100,100,100));
+        //event[i].group.push_back(event[i].rectangle);
+
+        event[i].title.setFont(font);
+        event[i].title.setFillColor(sf::Color::Yellow);
+        event[i].title.setPosition(sf::Vector2f(200,200));
+        event[i].title.setCharacterSize(17);
+        event[i].group.push_back(event[i].title);
+
+        event[i].info.setPosition(sf::Vector2f(event[i].height*i + 10, 10));
+        event[i].group.push_back(event[i].info);
+
+        event[i].dateInString.setFont(font);
+        event[i].dateToString();
+        event[i].dateInString.setPosition(sf::Vector2f(event[i].height*i + 20, 10));
+        event[i].group.push_back(event[i].dateInString);
+
+    }
+}
+
