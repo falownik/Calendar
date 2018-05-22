@@ -89,6 +89,7 @@ public:
     void updateTime(Time time);
     void updateTitle(std::string title);
     void updateInfo(std::string info);
+    
 };
 
 class CalendarGui
@@ -119,6 +120,7 @@ public:
     void addEvent();
     void ReadEvent();
     void printEvent();
+    void updateEvent();
     Calendar getDate(sf::Vector2i);
 };
 class Button 

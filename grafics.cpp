@@ -144,18 +144,42 @@ void EventGui::setEvent(int numberOfEvent)
 
     file.close();
 
-     std::cout << "flaga 3";
 }
 void EventGui::dateToString()
 {
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
-    dateInString.setFont(font);
 
-    dateInString.setString(std::to_string(event.time.hour) + ":" + std::to_string(event.time.minute) +
-    "   " + std::to_string(event.date.day) + "." + std::to_string(event.date.month) + "." +
-    std::to_string(event.date.year));
+    dateInString.setString(std::to_string(event.time.hour) + ":" + std::to_string(event.time.minute) + "   " + std::to_string(event.date.day) + "." + std::to_string(event.date.month) + "." + std::to_string(event.date.year));
 
+}
+void CalendarGui::printEvent()
+{
+    for (unsigned int i = 0; i < event.size() ; i++)
+    {
+        font.loadFromFile("arial.ttf");
+        event[i].width = 500;
+        event[i].height = 70;
+        event[i].rectangle.setSize(sf::Vector2f(event[i].width, event[i].height));
+        event[i].rectangle.setPosition(sf::Vector2f(10, 10 + (event[i].height + 10)*i));
+        event[i].rectangle.setFillColor(sf::Color(100,100,100));
+        event[i].group.push_back(event[i].rectangle);
+
+        event[i].title.setFont(font);
+        event[i].title.setFillColor(sf::Color::Yellow);
+        event[i].title.setPosition(sf::Vector2f(10,(event[i].height + 10)*i + 10));
+        event[i].title.setCharacterSize(17);
+        event[i].group.push_back(event[i].title);
+
+        event[i].info.setPosition(sf::Vector2f(10, (event[i].height + 10)*i + 30));
+        event[i].info.setCharacterSize(17);
+        event[i].group.push_back(event[i].info);
+
+        event[i].dateInString.setFont(font);
+        event[i].dateToString();
+        event[i].dateInString.setCharacterSize(17);
+        event[i].dateInString.setPosition(sf::Vector2f( 10, (event[i].height + 10)*i + 50));
+        event[i].group.push_back(event[i].dateInString);
+
+    }
 }
 
 
@@ -195,11 +219,11 @@ void CalendarGui::addEvent()
     e.title.setString(tit);
     e.info.setString(i);
 
+    event.erase(event.begin(), event.end());
     e.setEvent(event.size());
-    event.push_back(e);
+    this->ReadEvent();
 
-     std::cout << "flaga 2";
-
+     this->printEvent();
 }
 void CalendarGui::ReadEvent()
 {
@@ -216,7 +240,6 @@ void CalendarGui::ReadEvent()
 
     while(!file.eof())
     {
-        std::cout << file.fail();
         file >> id; // ommiting id
         file >> eventgui.event.time.hour;
         file >> eventgui.event.time.minute;
@@ -231,41 +254,26 @@ void CalendarGui::ReadEvent()
         eventgui.title.setString(tit);
         eventgui.info.setString(inf);
 
+        if (file.fail() && !file.eof())
+        {
+            std::cout << "Bład formatowania danych, prosze poprawic" << std::endl;
+            return;
+        }
+
         event.push_back(eventgui);
 
-        std::cout << "wczytano";
     }
+    event.pop_back();
 
     file.close();
 }
 
-
-void CalendarGui::printEvent()
+void CalendarGui::updateEvent()
 {
-    for (unsigned int i = 0; i < event.size() ; i++)
-    {
-        font.loadFromFile("arial.ttf");
-        event[i].width = 500;
-        event[i].height = 120;
-        event[i].rectangle.setSize(sf::Vector2f(event[i].width, event[i].height));
-        event[i].rectangle.setPosition(sf::Vector2f(10, 10 + 130*i));
-        event[i].rectangle.setFillColor(sf::Color(100,100,100));
-        //event[i].group.push_back(event[i].rectangle);
-
-        event[i].title.setFont(font);
-        event[i].title.setFillColor(sf::Color::Yellow);
-        event[i].title.setPosition(sf::Vector2f(200,200));
-        event[i].title.setCharacterSize(17);
-        event[i].group.push_back(event[i].title);
-
-        event[i].info.setPosition(sf::Vector2f(event[i].height*i + 10, 10));
-        event[i].group.push_back(event[i].info);
-
-        event[i].dateInString.setFont(font);
-        event[i].dateToString();
-        event[i].dateInString.setPosition(sf::Vector2f(event[i].height*i + 20, 10));
-        event[i].group.push_back(event[i].dateInString);
-
-    }
+    event.erase(event.begin(), event.end());
+    this->ReadEvent();
+    this->printEvent();
 }
+
+
 

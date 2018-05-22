@@ -62,6 +62,8 @@ cal.ReadEvent();
 Button buttonAddEvent;
 Button buttonIncrementYear;
 Button buttonDecrementYear;
+Button buttonUpdateEvent;
+buttonUpdateEvent.setButton(1200,20, 60, 50,"update\nevent");
 buttonAddEvent.setButton(1300,20, 50, 50,"add\nevent");
 buttonIncrementYear.setButton(1500, 20, 80, 50,"next");
 buttonDecrementYear.setButton(1400,20, 80, 50,"previous");
@@ -92,11 +94,15 @@ while (cal.Window.isOpen())
                     if (event.mouseButton.y > buttonAddEvent.y && event.mouseButton.y < buttonAddEvent.y + buttonAddEvent.height)
                     {
                         cal.addEvent();
-                        std::cout << " co jest";
+                    }
+                if (event.mouseButton.x > buttonUpdateEvent.x && event.mouseButton.x < buttonUpdateEvent.x + buttonUpdateEvent.width)
+                    if (event.mouseButton.y > buttonUpdateEvent.y && event.mouseButton.y < buttonUpdateEvent.y + buttonUpdateEvent.height)
+                    {
+                        cal.updateEvent();
                     }
             }
-                break;
-                /*
+            break;
+            /*
             case sf::Event::KeyPressed:
                 if (sf::Event::KeyEvent::alt)
                 ;
@@ -109,9 +115,11 @@ while (cal.Window.isOpen())
 
     }
     cal.Window.clear();
-    cal.Window.draw(cal.event[0].group);
+    for(unsigned int i = 0; i < cal.event.size(); i++)
+        cal.Window.draw(cal.event[i].group);
     cal.Window.draw(buttonDecrementYear.group);
     cal.Window.draw(buttonAddEvent.group);
+    cal.Window.draw(buttonUpdateEvent.group);
     cal.Window.draw(buttonIncrementYear.group);
     cal.drawCalendar(1600, 800, year);
 }
